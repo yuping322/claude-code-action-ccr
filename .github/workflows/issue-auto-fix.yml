@@ -1,0 +1,27 @@
+name: Issue Auto Fix and PR
+
+on:
+  issues:
+    types: [opened]
+
+jobs:
+  auto-fix:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    permissions:
+      contents: write
+      pull-requests: write
+      issues: write
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+
+      - name: Claude Auto Fix and PR
+        uses: ./base-action
+        with:
+          prompt: |
+            针对本 issue 自动修复相关代码，并以"Auto fix for issue #${{ github.event.issue.number }}"为标题创建一个新的 PR，PR 描述中引用本 issue。
+          github_token: ${{ secrets.GITHUB_TOKEN }}

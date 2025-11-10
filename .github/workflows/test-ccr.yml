@@ -1,0 +1,24 @@
+name: Test CCR Action
+
+on:
+  workflow_dispatch:
+    inputs:
+      test_prompt:
+        description: 'Test prompt for CCR'
+        required: true
+        default: 'Hello, can you help me test this action?'
+
+jobs:
+  test-ccr:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v5
+
+      - name: Test CCR Action
+        uses: ./base-action
+        with:
+          prompt: ${{ github.event.inputs.test_prompt || 'Hello, can you help me test this action?' }}
+          show_full_output: true
